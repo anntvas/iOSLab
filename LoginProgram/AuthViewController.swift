@@ -34,7 +34,11 @@ class AuthViewController: UIViewController {
     }
     
     @IBAction func signIn(_ sender: Any) {
-        guard let login = loginTextField.text, let password = passwordTextField.text else { return }
+        guard let login = loginTextField.text
+        let password = passwordTextField.text 
+        else { 
+              return 
+        }
                 
         if let user = logIn(login: login, password: password) {
             loginTextField.text = ""
