@@ -8,12 +8,19 @@
 import UIKit
 
 class MainTabController: UITabBarController {
+    
+    var user: User?
+    var profileVC: ProfileViewController!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        profileVC = self.viewControllers![0] as? ProfileViewController
     }
+    override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+            
+    }
+    
+    
     
 
     /*
