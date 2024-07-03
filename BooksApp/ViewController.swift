@@ -24,7 +24,6 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -36,7 +35,7 @@ class ViewController: UIViewController {
     }
     
     
-    @IBAction func signIn(_ sender: Any) {
+    @IBAction func signInButtonSmashed(_ sender: Any) {
         guard let login = loginTextField.text, let password = passwordTextField.text else { return }
                 
         if let user = LogInUser(login: login, pass: password) {

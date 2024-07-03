@@ -31,7 +31,8 @@ class  ProfileViewController: UIViewController {
         mailView.text = user?.contactInfo
         bioView.text = user?.bio
     }
-    @IBAction func signOut(_ sender: Any) {
+    
+    @IBAction func signOutButton(_ sender: Any) {
         navigationController?.popToRootViewController(animated: true)
     }
 }
