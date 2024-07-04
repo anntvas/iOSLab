@@ -1,10 +1,3 @@
-//
-//  ViewController.swift
-//  BooksApp
-//
-//  Created by Anna on 02.07.2024.
-//
-
 import UIKit
 
 class ViewController: UIViewController {
@@ -12,9 +5,6 @@ class ViewController: UIViewController {
     @IBOutlet weak var loginTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var doneButton: UIButton!
-    
-    
-    
     private var users = [User(login: "ivanov", password: "ivan123", fullName: "Иванов Иван Иванович", birthDate: "20.02.1963", contactInfo: "ivan12345@mail.ru", bio: "Ценю честность, прямоту и душевные разговоры. В свободное время люблю сходить на рыбалку и смотреть футбол.", profilePic: .pfp),
                          User(login: "elonmusk", password: "spacex-success", fullName: "Elon Musk", birthDate: "28.06.1971", contactInfo: "elonmusk@x.com", bio: "The CEO and co-founder of SpaceX, Tesla, Neuralink and The Boring Company", profilePic: .elonmusk)]
     
@@ -24,19 +14,16 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "enterProfile" {
-            if let profileVC = segue.destination as? MainTabController, let user = sender as? User {
-                profileVC.user = user
-            }
-        }
+        guard
+            segue.identifier == "enterProfile",
+            let tabBarController = segue.destination as? MainTabController, let user = sender as? User else { return }
+        tabBarController.user = user
     }
     
-    
-    @IBAction func signIn(_ sender: Any) {
+    @IBAction func signInButtonSmashed(_ sender: Any) {
         guard let login = loginTextField.text, let password = passwordTextField.text else { return }
                 
         if let user = LogInUser(login: login, pass: password) {
@@ -49,6 +36,5 @@ class ViewController: UIViewController {
             present(alert, animated: true, completion: nil)
         }
     }
-
 }
 

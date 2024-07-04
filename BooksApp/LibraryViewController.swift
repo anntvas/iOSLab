@@ -1,54 +1,47 @@
-//
-//  LibraryViewController.swift
-//  BooksApp
-//
-//  Created by Anna on 02.07.2024.
-//
-
 import UIKit
-class Book {
-    var bookName: String
-    var author: String
-    var cover: UIImage
-    var isAdded: Bool
-    init(bookName: String, author: String, cover: UIImage, isAdded: Bool) {
-        self.bookName = bookName
-        self.author = author
-        self.cover = cover
-        self.isAdded = isAdded
-    }
-}
 
 class LibraryViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
-    
-    var dataSourse: [Book] = [Book(bookName:"Противостояние", author: "Стивен Кинг", cover: .elonmusk, isAdded: false), Book(bookName: "Великий Гэтсби", author: "Фрэнсиси Скотт Фицдджеральд", cover: .pfp, isAdded: false)]
+    var dataSource = BooksManager.shared.getBooks()
+    var user: User?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.dataSource = self
         tableView.delegate = self
+        tableView.dataSource = self
+        guard
+            let tabBarController = self.tabBarController as? MainTabController else { return }
+        self.user = tabBarController.user
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard
+            segue.identifier == "showBookInfo",
+            let tabBarController = segue.destination as? BookViewController, let book = sender as? Book else { return }
+        tabBarController.book = book
+        tabBarController.user = user
     }
 }
 
-extension LibraryViewController: UITableViewDataSource, UITableViewDelegate {
+extension LibraryViewController: UITableViewDelegate, UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        dataSourse.count
+        dataSource.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "BookTableViewCell") as? BookTableViewCell else { return UITableViewCell() }
-        cell.config(book: dataSourse[indexPath.row])
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "BookTableViewCell", for: indexPath) as? BookTableViewCell else { return UITableViewCell()}
+        cell.configure(with: dataSource[indexPath.row], user: self.user)
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        65
+        170
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "goFirst", sender: nil)
+        let book = dataSource[indexPath.row]
+        performSegue(withIdentifier: "showBookInfo", sender: book)
     }
-    
 }
