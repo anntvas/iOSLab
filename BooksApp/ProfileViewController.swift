@@ -1,7 +1,6 @@
 import UIKit
 
 class  ProfileViewController: UIViewController {
-    
     @IBOutlet weak var nameView: UILabel!
     @IBOutlet weak var dateView: UILabel!
     @IBOutlet weak var mailView: UILabel!
