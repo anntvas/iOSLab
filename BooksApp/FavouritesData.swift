@@ -1,31 +1,22 @@
-//
-//  FavouritesData.swift
-//  BooksApp
-//
-//  Created by Anna on 03.07.2024.
-//
-
 import Foundation
 
 class FavouritesData {
     static let shared = FavouritesData()
     private let userDefaultsKey = "likedBooksByUser"
+    private var likedBooksByUser = [String:[Book]]()
     
     private init() {
         loadLikedBooks()
     }
-    private var likedBooksByUser = [String:[Book]]()
     
     func getLikedBooks(user: User) -> [Book] {
         return likedBooksByUser[user.login] ?? []
-        
     }
     
     func addLikedBook(user: User, book: Book) {
         if likedBooksByUser[user.login] == nil {
             likedBooksByUser[user.login] = [book]
         }
-        
         if !likedBooksByUser[user.login]!.contains(book) {
             likedBooksByUser[user.login]?.append(book)
             saveLikedBooks()
@@ -37,14 +28,13 @@ class FavouritesData {
     }
     
     func removeLikedBook(user: User, book: Book) {
-        if var likedBooks = likedBooksByUser[user.login] {
-            if let index = likedBooks.firstIndex(of: book) {
-                likedBooks.remove(at: index)
-                likedBooksByUser[user.login] = likedBooks
-            }
-        }
+        guard var likedBooks = likedBooksByUser[user.login] else { return }
+        guard let index = likedBooks.firstIndex(of: book) else { return }
+        likedBooks.remove(at: index)
+        likedBooksByUser[user.login] = likedBooks
         saveLikedBooks()
     }
+    
     private func saveLikedBooks() {
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(likedBooksByUser) {
@@ -53,11 +43,9 @@ class FavouritesData {
     }
     
     private func loadLikedBooks() {
-        if let savedData = UserDefaults.standard.data(forKey: userDefaultsKey) {
-            let decoder = JSONDecoder()
-            if let decoded = try? decoder.decode([String: [Book]].self, from: savedData) {
-                likedBooksByUser = decoded
-            }
-        }
+        guard let savedData = UserDefaults.standard.data(forKey: userDefaultsKey) else { return }
+        let decoder = JSONDecoder()
+        guard let decoded = try? decoder.decode([String: [Book]].self, from: savedData) else { return }
+        likedBooksByUser = decoded
     }
 }

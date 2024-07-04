@@ -1,14 +1,7 @@
-//
-//  BookViewController.swift
-//  BooksApp
-//
-//  Created by Anna on 03.07.2024.
-//
-
 import UIKit
 
 class BookViewController: UIViewController {
-
+ 
     @IBOutlet weak var bookCoverView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var authorLabel: UILabel!
@@ -20,31 +13,25 @@ class BookViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-
-        configure()
-        // Do any additional setup after loading the view.
+        config()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        configure()
+        config()
     }
     
-    func configure() {
+    func config() {
         authorLabel.text = book?.author
         nameLabel.text = book?.name
         bookCoverView.image = book?.image
-        bioLabel.text = book?.summary
+        bioLabel.text = book?.bio
         if let user = user, likedBooks.isBookLiked(user: user, book: book!) {
             likeButton.setTitle("В избранном", for: .normal)
-
         } else {
             likeButton.setTitle("Добавить в избранное", for: .normal)
-
         }
     }
-    
 
     @IBAction func toLikedButtonTapped(_ sender: Any) {
         guard let user = user, let book = book else { return }
@@ -55,11 +42,7 @@ class BookViewController: UIViewController {
         } else {
             likedBooks.addLikedBook(user: user, book: book)
             likeButton.setTitle("В избранном", for: .normal)
-
         }
         NotificationCenter.default.post(name: .likedBooksUpdated, object: nil)
-
     }
-
-
 }

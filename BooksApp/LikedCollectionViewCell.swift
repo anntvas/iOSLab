@@ -1,18 +1,11 @@
-//
-//  LikedCollectionViewCell.swift
-//  BooksApp
-//
-//  Created by Anna on 03.07.2024.
-//
-
 import Foundation
 import UIKit
 
 
 class LikedCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var coverImageView: UIImageView!
-    @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var authorLabel: UILabel!
+    @IBOutlet weak var nameLabel: UILabel!
     
     override func prepareForReuse() {
         super.prepareForReuse()

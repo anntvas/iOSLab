@@ -1,10 +1,3 @@
-//
-//  BookTableViewCell.swift
-//  BooksApp
-//
-//  Created by Anna on 03.07.2024.
-//
-
 import UIKit
 
 class BookTableViewCell: UITableViewCell {
@@ -14,7 +7,6 @@ class BookTableViewCell: UITableViewCell {
     @IBOutlet weak var likeButton: UIButton!
     private var book: Book?
     private var user: User?
-    
     private let favouritesData = FavouritesData.shared
     
     override func awakeFromNib() {
@@ -46,22 +38,16 @@ class BookTableViewCell: UITableViewCell {
             likeButton.tintColor = .gray
         }
     }
-    
-    
+        
     @IBAction func heartButtonTapped(_ sender: UIButton) {
-        print(1)
         guard let book = book, let user = user else { return }
         if favouritesData.isBookLiked(user: user, book: book) {
-            print(2)
             likeButton.tintColor = .gray
             favouritesData.removeLikedBook(user: user, book: book)
         } else {
-            print(3)
             favouritesData.addLikedBook(user: user, book: book)
             likeButton.tintColor = .red
         }
-        
-        // Отправляем уведомление
         NotificationCenter.default.post(name: .likedBooksUpdated, object: nil)
     }
     

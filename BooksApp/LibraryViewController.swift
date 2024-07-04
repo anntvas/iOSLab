@@ -1,10 +1,3 @@
-//
-//  LibraryViewController.swift
-//  BooksApp
-//
-//  Created by Anna on 03.07.2024.
-//
-
 import UIKit
 
 class LibraryViewController: UIViewController {
@@ -22,7 +15,6 @@ class LibraryViewController: UIViewController {
         self.user = tabBarController.user
     }
     
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard
             segue.identifier == "showBookInfo",
@@ -30,8 +22,6 @@ class LibraryViewController: UIViewController {
         tabBarController.book = book
         tabBarController.user = user
     }
-    
-    
 }
 
 extension LibraryViewController: UITableViewDelegate, UITableViewDataSource {
@@ -50,10 +40,8 @@ extension LibraryViewController: UITableViewDelegate, UITableViewDataSource {
         170
     }
     
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let book = dataSource[indexPath.row]
-        performSegue(withIdentifier: "showDetailedInfoBook", sender: book)
+        performSegue(withIdentifier: "showBookInfo", sender: book)
     }
-
 }

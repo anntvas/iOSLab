@@ -1,10 +1,3 @@
-//
-//  FavouritesViewController.swift
-//  BooksApp
-//
-//  Created by Anna on 02.07.2024.
-//
-
 import UIKit
 
 class FavouritesViewController: UIViewController {
@@ -12,8 +5,6 @@ class FavouritesViewController: UIViewController {
     var user: User?
     var dataSource: UICollectionViewDiffableDataSource<Int, Book>!
     private let favouritesData = FavouritesData.shared
-    
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +15,6 @@ class FavouritesViewController: UIViewController {
         self.user = user
         updateDataSource()
         NotificationCenter.default.addObserver(self, selector: #selector(updateDataSource), name: .likedBooksUpdated, object: nil)
-
     }
     
     deinit {
@@ -33,47 +23,34 @@ class FavouritesViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         updateDataSource()
     }
     
     @objc func updateDataSource() {
             guard let user = user else { return }
             let likedBooks = favouritesData.getLikedBooks(user: user)
-            
             var snapshot = NSDiffableDataSourceSnapshot<Int, Book>()
             snapshot.appendSections([0])
             snapshot.appendItems(likedBooks)
             dataSource.apply(snapshot, animatingDifferences: true)
     }
     
-    
     func configureCollectionView() {
             likedBooksCollection.collectionViewLayout = UICollectionViewFlowLayout()
-            
             dataSource = UICollectionViewDiffableDataSource<Int, Book>(collectionView: likedBooksCollection) { collectionView, indexPath, book in
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LikedCollectionViewCell", for: indexPath) as? LikedCollectionViewCell else {
-                    fatalError("Cannot create new cell")
-                }
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LikedCollectionViewCell", for: indexPath) as? LikedCollectionViewCell else { return nil }
                 cell.configure(with: book)
-                
                 return cell
             }
-            
             likedBooksCollection.dataSource = dataSource
             likedBooksCollection.delegate = self
         }
-    
 }
 
 extension FavouritesViewController: UICollectionViewDelegateFlowLayout {
-    
-    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        CGSize(width: 358, height: 159)
+        CGSize(width: 360, height: 160)
     }
-
-    
 }
 
 extension Notification.Name {
